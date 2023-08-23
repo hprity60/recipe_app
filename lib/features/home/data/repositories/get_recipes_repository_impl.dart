@@ -12,10 +12,10 @@ class GetRecipesRepositoryImpl implements GetRecipesRepository {
   });
 
   @override
-  Future<RecipesResponseModel> searchRecipe() async {
+  Future<RecipesResponseModel> searchRecipe({required String query}) async {
     try {
       final RecipesResponseModel recipesResponseModel =
-          await getRecipesRemoteDataSource.searchRecipe();
+          await getRecipesRemoteDataSource.searchRecipe(query: query);
 
       return recipesResponseModel;
     } on DioException {

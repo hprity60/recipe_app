@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:recipe_app/core/network/interceptor/error_interceptor.dart';
 
 import '../values/app_strings.dart';
 
@@ -7,11 +8,10 @@ class DioProvider {
 
   DioProvider() : _dio = Dio() {
     _dio.options.baseUrl = AppStrings.baseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 15);
+    _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
     _dio.options.responseType = ResponseType.json;
     _dio.interceptors.addAll([
-      
       LogInterceptor(
         request: true,
         requestHeader: true,
@@ -19,8 +19,7 @@ class DioProvider {
         responseHeader: true,
         responseBody: true,
       ),
-      
-      
+      ErrorInterceptor(),
     ]);
   }
 

@@ -1,44 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_app/core/network/dio_client.dart';
+import 'package:recipe_app/features/home/data/datasources/remote_data_sources.dart/get_recipes_remote_data_source_impl.dart';
+import 'package:recipe_app/features/home/data/repositories/get_recipes_repository_impl.dart';
+import 'package:recipe_app/features/home/presentation/pages/search_list_page.dart';
+
+import '../../data/models/recipes_response_model.dart';
+import '../bloc/home_bloc.dart';
 
 class HomePage extends StatelessWidget {
   static const id = "home_page";
-  const HomePage({super.key});
+
+  HomePage({super.key});
+
+  late List<Hit> list;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Search",
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
-                  itemCount: 8,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Text('hello'),
-                    );
-                  }),
-            ),
-          ],
+    return BlocProvider(
+      create: (context) => HomeBloc(
+          getRecipesRepository: GetRecipesRepositoryImpl(
+              getRecipesRemoteDataSource:
+                  GetRecipesRemoteDataSourceImpl(dio: DioProvider())))
+        ..add(GetRecipesEvent(query: 'chicken')),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {
+            // if (state is RecipesListSuccessState) {
+            //   list = state.recipesResponseModel.hits;
+            // } else if (state is SearchRecipeLoadedState) {
+            //   list = state.recipeData;
+            // }
+          },
+          builder: (context, state) {
+            print("Current state >> $state");
+
+            if (state is RecipesLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is RecipesListSuccessState) {
+              // return const Text('Search Anything you want to see');
+              return SearchListPage(
+                recipeList: state.recipesResponseModel.hits,
+                searchList: const [],
+              );
+            } else if (state is SearchRecipeLoadedState) {
+              return SearchListPage(
+                recipeList: state.recipeData,
+                searchList: state.searchData,
+                filter: true,
+              );
+            }
+            return Center(
+              child: Container(),
+            );
+          },
         ),
-      )),
+      ),
     );
   }
 }

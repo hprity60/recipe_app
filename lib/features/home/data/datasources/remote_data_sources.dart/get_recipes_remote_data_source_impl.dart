@@ -11,9 +11,17 @@ class GetRecipesRemoteDataSourceImpl implements GetRecipesRemoteDataSource {
     required this.dio,
   });
   @override
-  Future<RecipesResponseModel> searchRecipe() async {
+  Future<RecipesResponseModel> searchRecipe({required String query}) async {
     try {
-      Response response = await dio.client.get(AppStrings.searchUrl);
+      final options = Options(
+        headers: {
+          'X-RapidAPI-Key':
+              "f162daa98amshf3ee577c5a00053p14c26cjsn2525170b7c64",
+          'X-RapidAPI-Host': 'edamam-recipe-search.p.rapidapi.com',
+        },
+      );
+      Response response = await dio.client.get(AppStrings.searchUrl,
+          queryParameters: {'q': query}, options: options);
       final responseBody = response.data;
       final RecipesResponseModel recipesResponseModel =
           RecipesResponseModel.fromJson(responseBody);
