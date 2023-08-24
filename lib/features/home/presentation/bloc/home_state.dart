@@ -31,16 +31,3 @@ class RecipesFailureState extends HomeState {
   @override
   List<Object> get props => [errorMessage];
 }
-
-class SearchRecipeLoadedState extends HomeState {
-  final List<Hit> recipeData;
-  final List<Hit> searchData;
-
-  const SearchRecipeLoadedState({
-    required this.searchData,
-    required this.recipeData,
-  });
-
-  @override
-  List<Object> get props => [searchData, recipeData];
-}

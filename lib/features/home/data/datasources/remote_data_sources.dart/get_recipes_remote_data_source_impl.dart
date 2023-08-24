@@ -17,9 +17,12 @@ class GetRecipesRemoteDataSourceImpl implements GetRecipesRemoteDataSource {
         headers: {
           'X-RapidAPI-Key':
               "f162daa98amshf3ee577c5a00053p14c26cjsn2525170b7c64",
-          'X-RapidAPI-Host': 'edamam-recipe-search.p.rapidapi.com',
         },
       );
+      print("DataSource Query >> $query");
+
+      print("Search url >> ${AppStrings.searchUrl}");
+      print("Base url >> ${AppStrings.baseUrl}");
       Response response = await dio.client.get(AppStrings.searchUrl,
           queryParameters: {'q': query}, options: options);
       final responseBody = response.data;

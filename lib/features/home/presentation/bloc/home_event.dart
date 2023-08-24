@@ -17,18 +17,3 @@ class GetRecipesEvent extends HomeEvent {
   @override
   List<Object> get props => [query];
 }
-
-class SearchRecipesLoadedEvent extends HomeEvent {
-  final String searchKey;
-  final List<Hit> recipeData;
-  final List<Hit> searchData;
-
-  const SearchRecipesLoadedEvent({
-    required this.searchKey,
-    required this.recipeData,
-    required this.searchData,
-  });
-
-  @override
-  List<Object> get props => [searchKey, recipeData, searchData];
-}

@@ -28,19 +28,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
 
-    on<SearchRecipesLoadedEvent>((event, emit) {
-      List<Hit> searchData = [];
-      for (var i = 0; i < event.recipeData.length; i++) {
-        if (event.recipeData[i].recipe.label
-            .toLowerCase()
-            .contains(event.searchKey.toLowerCase())) {
-          searchData.add(event.recipeData[i]);
-        }
-      }
-      emit(SearchRecipeLoadedState(
-        recipeData: event.recipeData,
-        searchData: searchData,
-      ));
-    });
+    
   }
 }

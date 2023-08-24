@@ -80,8 +80,8 @@ class Recipe {
   double totalWeight;
   double totalTime;
   List<String> cuisineType;
-  List<MealType> mealType;
-  List<DishType> dishType;
+  // List<MealType> mealType;
+  // List<DishType> dishType;
   Map<String, Total> totalNutrients;
   Map<String, Total> totalDaily;
   List<Digest> digest;
@@ -103,8 +103,8 @@ class Recipe {
     required this.totalWeight,
     required this.totalTime,
     required this.cuisineType,
-    required this.mealType,
-    required this.dishType,
+    // required this.mealType,
+    // required this.dishType,
     required this.totalNutrients,
     required this.totalDaily,
     required this.digest,
@@ -129,10 +129,10 @@ class Recipe {
         totalWeight: json["totalWeight"]?.toDouble(),
         totalTime: json["totalTime"] ?? 0.0,
         cuisineType: List<String>.from(json["cuisineType"].map((x) => x)),
-        mealType: List<MealType>.from(
-            json["mealType"].map((x) => mealTypeValues.map[x])),
-        dishType: List<DishType>.from(
-            json["dishType"].map((x) => dishTypeValues.map[x])),
+        // mealType: List<MealType>.from(
+        //     json["mealType"].map((x) => mealTypeValues.map[x])),
+        // dishType: List<DishType>.from(
+        //     json["dishType"].map((x) => dishTypeValues.map[x])),
         totalNutrients: Map.from(json["totalNutrients"])
             .map((k, v) => MapEntry<String, Total>(k, Total.fromJson(v))),
         totalDaily: Map.from(json["totalDaily"])
@@ -158,10 +158,10 @@ class Recipe {
         "totalWeight": totalWeight,
         "totalTime": totalTime,
         "cuisineType": List<dynamic>.from(cuisineType.map((x) => x)),
-        "mealType":
-            List<dynamic>.from(mealType.map((x) => mealTypeValues.reverse[x])),
-        "dishType":
-            List<dynamic>.from(dishType.map((x) => dishTypeValues.reverse[x])),
+        // "mealType":
+        //     List<dynamic>.from(mealType.map((x) => mealTypeValues.reverse[x])),
+        // "dishType":
+        //     List<dynamic>.from(dishType.map((x) => dishTypeValues.reverse[x])),
         "totalNutrients": Map.from(totalNutrients)
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "totalDaily": Map.from(totalDaily)
@@ -252,18 +252,18 @@ final unitValues = EnumValues({
   "µg": Unit.UNIT_G
 });
 
-enum DishType { CONDIMENTS_AND_SAUCES, MAIN_COURSE, STARTER }
+// enum DishType { CONDIMENTS_AND_SAUCES, MAIN_COURSE, STARTER }
 
-final dishTypeValues = EnumValues({
-  "condiments and sauces": DishType.CONDIMENTS_AND_SAUCES,
-  "main course": DishType.MAIN_COURSE,
-  "starter": DishType.STARTER
-});
+// final dishTypeValues = EnumValues({
+//   "condiments and sauces": DishType.CONDIMENTS_AND_SAUCES,
+//   "main course": DishType.MAIN_COURSE,
+//   "starter": DishType.STARTER
+// });
 
 class Ingredient {
   String text;
   double weight;
-  String foodCategory;
+  String? foodCategory;
   String foodId;
   String? image;
 
@@ -278,7 +278,7 @@ class Ingredient {
   factory Ingredient.fromJson(Map<String, dynamic> json) => Ingredient(
         text: json["text"],
         weight: json["weight"]?.toDouble(),
-        foodCategory: json["foodCategory"],
+        foodCategory: json["foodCategory"] ?? "",
         foodId: json["foodId"],
         image: json["image"],
       );
@@ -292,10 +292,10 @@ class Ingredient {
       };
 }
 
-enum MealType { BRUNCH, LUNCH_DINNER }
+// enum MealType { BRUNCH, LUNCH_DINNER }
 
-final mealTypeValues = EnumValues(
-    {"brunch": MealType.BRUNCH, "lunch/dinner": MealType.LUNCH_DINNER});
+// final mealTypeValues = EnumValues(
+//     {"brunch": MealType.BRUNCH, "lunch/dinner": MealType.LUNCH_DINNER});
 
 class Total {
   String label;

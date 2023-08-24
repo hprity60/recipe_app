@@ -14,6 +14,7 @@ class GetRecipesRepositoryImpl implements GetRecipesRepository {
   @override
   Future<RecipesResponseModel> searchRecipe({required String query}) async {
     try {
+      print("Repo Query >> $query");
       final RecipesResponseModel recipesResponseModel =
           await getRecipesRemoteDataSource.searchRecipe(query: query);
 
