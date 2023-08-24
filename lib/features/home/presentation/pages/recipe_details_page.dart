@@ -6,15 +6,37 @@ import 'package:recipe_app/features/home/presentation/widgets/custom_text_style.
 import 'package:recipe_app/features/home/presentation/widgets/nutrition_column.dart';
 
 import '../../../../core/values/text_styles.dart';
+import '../widgets/custom_raw_scrollbar.dart';
 import '../widgets/custom_text_field.dart';
 
-class RecipeDetailPage extends StatelessWidget {
+class RecipeDetailPage extends StatefulWidget {
   static const id = "recipe_detail_page";
   RecipeDetailPage({super.key, required this.recipes});
 
   final Hit recipes;
 
+  @override
+  State<RecipeDetailPage> createState() => _RecipeDetailPageState();
+}
+
+class _RecipeDetailPageState extends State<RecipeDetailPage>
+    with SingleTickerProviderStateMixin {
   TextEditingController searchController = TextEditingController();
+  late TabController tabController;
+
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    tabController = TabController(length: 4, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +175,7 @@ class RecipeDetailPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(25),
                           clipBehavior: Clip.antiAlias,
                           child: Image.network(
-                            recipes.recipe.image,
+                            widget.recipes.recipe.image,
                             height: 150,
                             width: 150,
                           ),
@@ -205,18 +227,65 @@ class RecipeDetailPage extends StatelessWidget {
                     )),
                     const CustomTextStyle(text: "Ingredients"),
                     const SizedBox(height: 10),
-                    Container(
-                      height: 97,
-                      width: 90,
-                      decoration: BoxDecoration(
-                        color: primaryColor.withOpacity(.4),
-                      ),
-                      child: Container(
-                        height: 50,
-                        width: 90,
-                        decoration: const BoxDecoration(
-                          color: blackColor,
-                        ),
+                    SizedBox(
+                      height: 100,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return SizedBox(width: 10);
+                        },
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                height: 97,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(22),
+                                      bottomRight: Radius.circular(22),
+                                      topLeft: Radius.circular(22),
+                                      topRight: Radius.circular(22)),
+                                  color: primaryColor.withOpacity(.4),
+                                ),
+                              ),
+                              Container(
+                                height: 60,
+                                width: 90,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(22),
+                                      topRight: Radius.circular(22)),
+                                  color: primaryColor,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '2.0 tbsp',
+                                      style: textStyleF16W600(),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Positioned.fill(
+                                top: 67,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Vegetable oil',
+                                      style: textStyleF12W500(),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -333,112 +402,75 @@ class RecipeDetailPage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
+                    const CustomTextStyle(text: "Nutrition"),
+                    const SizedBox(height: 10),
                     Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(0),
-                              bottomLeft: Radius.circular(25),
-                              bottomRight: Radius.circular(25),
-                              topRight: Radius.circular(25))),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      height: 200,
+                      child: Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Fat",
-                                    style: textStyleF15W700(),
-                                  ),
-                                  const Icon(Icons.keyboard_arrow_down),
+                          Container(
+                            // height: 50,
+                            width: MediaQuery.of(context).size.height,
+                            decoration: BoxDecoration(
+                                color: whiteColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(0, 4),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                    color: blackColor.withOpacity(.25),
+                                  )
                                 ],
-                              ),
-                              Text(
-                                'Cholesterol',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                'Trans',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                'Monounsaturated',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                'Polyunsaturated',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                            ],
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: TabBar(
+                                    unselectedLabelColor: tabColor,
+                                    labelColor: blackColor,
+                                    indicatorColor: tabColor,
+                                    indicatorWeight: 2,
+                                    indicator: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    controller: tabController,
+                                    tabs: [
+                                      Tab(
+                                        text: 'Fat',
+                                      ),
+                                      Tab(
+                                        text: 'Carbs',
+                                      ),
+                                      Tab(
+                                        text: 'Protein',
+                                      ),
+                                      Tab(
+                                        text: 'Cholesterol',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 30),
-                          Column(
-                            children: [
-                              Text(
-                                '7g',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Container(
-                                height: 1,
-                                width: 40,
-                                color: blackColor,
-                              ),
-                              Text(
-                                '1g',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                '0g',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                '4g',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                '1g',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                            ],
+                          SizedBox(height: 10),
+                          Expanded(
+                            child: TabBarView(
+                              controller: tabController,
+                              children: [
+                                CustomRawScrollbar(),
+                                CustomRawScrollbar(),
+                                CustomRawScrollbar(),
+                                CustomRawScrollbar(),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 30),
-                          Column(
-                            children: [
-                              Text(
-                                '11%',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Container(
-                                height: 1,
-                                width: 40,
-                                color: blackColor,
-                              ),
-                              Text(
-                                '7%',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                '0%',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                '0%',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                              Text(
-                                '0%',
-                                style: textStyleF14W500(color: textColor),
-                              ),
-                            ],
-                          )
                         ],
                       ),
                     ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

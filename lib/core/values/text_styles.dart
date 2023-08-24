@@ -24,6 +24,12 @@ textStyleF11W600({Color color = Colors.black}) => TextStyle(
       fontWeight: FontWeight.w600,
     );
 
+textStyleF12W500({Color color = Colors.black}) => TextStyle(
+      color: color,
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+    );
+
 textStyleF14W500({Color color = Colors.black}) => TextStyle(
       color: color,
       fontSize: 14,

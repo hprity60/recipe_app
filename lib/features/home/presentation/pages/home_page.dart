@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/core/arg_model/recipe_arg_model.dart';
 import 'package:recipe_app/core/network/dio_client.dart';
 import 'package:recipe_app/core/values/app_colors.dart';
+import 'package:recipe_app/core/values/text_styles.dart';
 import 'package:recipe_app/features/home/data/datasources/remote_data_sources.dart/get_recipes_remote_data_source_impl.dart';
 import 'package:recipe_app/features/home/data/repositories/get_recipes_repository_impl.dart';
 import 'package:recipe_app/features/home/presentation/pages/recipe_details_page.dart';
@@ -166,7 +167,7 @@ class HomePage extends StatelessWidget {
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .center,
+                                                              .spaceBetween,
                                                       children: [
                                                         Text(
                                                           list![index]
@@ -174,21 +175,22 @@ class HomePage extends StatelessWidget {
                                                               .calories
                                                               .toString()
                                                               .split('.')[0],
-                                                          style:
-                                                              const TextStyle(
-                                                            color: primaryColor,
-                                                          ),
+                                                          style: textStyleF12W500(
+                                                              color:
+                                                                  primaryColor),
                                                         ),
-                                                        const Text("  CAL "),
-                                                        const SizedBox(
-                                                            width: 5),
+                                                        Text(
+                                                          "  CAL ",
+                                                          style:
+                                                              textStyleF12W500(
+                                                                  color:
+                                                                      textColor),
+                                                        ),
                                                         Container(
                                                           height: 15,
                                                           width: 1,
                                                           color: greyColor,
                                                         ),
-                                                        const SizedBox(
-                                                            width: 10),
                                                         Text(
                                                           list![index]
                                                               .recipe
@@ -196,11 +198,17 @@ class HomePage extends StatelessWidget {
                                                               .weight
                                                               .toString()
                                                               .split('.')[0],
-                                                          style: const TextStyle(
+                                                          style: textStyleF12W500(
                                                               color:
                                                                   primaryColor),
                                                         ),
-                                                        const Text("  INGR"),
+                                                        Text(
+                                                          "  INGR",
+                                                          style:
+                                                              textStyleF12W500(
+                                                                  color:
+                                                                      textColor),
+                                                        ),
                                                       ],
                                                     )
                                                   ],

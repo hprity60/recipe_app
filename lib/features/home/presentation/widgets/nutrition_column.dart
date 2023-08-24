@@ -18,6 +18,7 @@ class NutritionColumn extends StatelessWidget {
     return Column(
       children: [
         Container(
+          width: 40,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
