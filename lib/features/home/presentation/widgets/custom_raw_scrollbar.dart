@@ -1,10 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:recipe_app/features/home/data/models/recipes_response_model.dart';
 
 import '../../../../core/values/app_colors.dart';
 import '../../../../core/values/text_styles.dart';
 
 class CustomRawScrollbar extends StatefulWidget {
-  const CustomRawScrollbar({super.key});
+  const CustomRawScrollbar({
+    Key? key,
+    required this.recipes,
+  }) : super(key: key);
+
+  final Hit recipes;
 
   @override
   State<CustomRawScrollbar> createState() => _CustomRawScrollbarState();
@@ -95,18 +103,23 @@ class _CustomRawScrollbarState extends State<CustomRawScrollbar> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Cholesterol',
+                                            widget
+                                                    .recipes
+                                                    .recipe
+                                                    .totalNutrients[index]
+                                                    ?.label ??
+                                                "",
                                             style: textStyleF14W500(
                                                 color: textColor),
                                           ),
                                           SizedBox(width: 10),
                                           Text(
-                                            '7g',
+                                            '${widget.recipes.recipe.totalNutrients[index]?.quantity.toString().split('.')[0]}${widget.recipes.recipe.totalNutrients[index]?.unit}',
                                             style: textStyleF14W500(
                                                 color: textColor),
                                           ),
                                           Text(
-                                            '6%',
+                                            '${widget.recipes.recipe.totalDaily[index]?.quantity.toString().split('.')[0]}${widget.recipes.recipe.totalDaily[index]?.unit}',
                                             style: textStyleF14W500(
                                                 color: textColor),
                                           ),

@@ -126,18 +126,20 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                   Positioned(
                     top: 110,
                     left: 20,
+                    right: 20,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Wok-Fried Duck & \nOyster Sauce',
+                              widget.recipes.recipe.label,
                               style: textStyleF15W700(),
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              'See full recipe on: \nBBC Good Food',
+                              'See full recipe on: \n${widget.recipes.recipe.source}',
                               style: textStyleF10W500(),
                             ),
                             const SizedBox(height: 15),
@@ -170,7 +172,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                             )
                           ],
                         ),
-                        const SizedBox(width: 90),
+                        //const SizedBox(width: 90),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(25),
                           clipBehavior: Clip.antiAlias,
@@ -195,36 +197,44 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                       "Health Labels:",
                       style: textStyleF11W600(color: thinColor),
                     ),
-                    Row(
-                      children: [
-                        Chip(
-                            label: Text(
-                          'Mediterranean',
-                          style: textStyleF10W500(),
-                        )),
-                        const SizedBox(width: 10),
-                        Chip(
-                            label: Text(
-                          'Peanut-Free',
-                          style: textStyleF10W500(),
-                        )),
-                        const SizedBox(width: 10),
-                        Chip(
-                            label: Text(
-                          'Tree-Nut-Free',
-                          style: textStyleF10W500(),
-                        )),
-                      ],
-                    ),
+                    SizedBox(
+                        height: 50,
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return Row(children: [
+                                Chip(
+                                    label: Text(
+                                  widget.recipes.recipe.healthLabels[index],
+                                  style: textStyleF10W500(),
+                                )),
+                              ]);
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(width: 20);
+                            },
+                            itemCount:
+                                widget.recipes.recipe.healthLabels.length)),
                     Text(
                       "Cuisine Type:",
                       style: textStyleF11W600(color: thinColor),
                     ),
-                    Chip(
-                        label: Text(
-                      'Italian',
-                      style: textStyleF10W500(),
-                    )),
+                    SizedBox(
+                        height: 50,
+                        child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return Row(children: [
+                                Chip(
+                                    label: Text(
+                                  widget.recipes.recipe.cuisineType[index],
+                                  style: textStyleF10W500(),
+                                )),
+                              ]);
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(width: 20);
+                            },
+                            itemCount:
+                                widget.recipes.recipe.cuisineType.length)),
                     const CustomTextStyle(text: "Ingredients"),
                     const SizedBox(height: 10),
                     SizedBox(
@@ -266,7 +276,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '2.0 tbsp',
+                                      widget.recipes.recipe.ingredients[index]
+                                          .text,
                                       style: textStyleF16W600(),
                                     )
                                   ],
@@ -277,7 +288,9 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                                 child: Column(
                                   children: [
                                     Text(
-                                      'Vegetable oil',
+                                      widget.recipes.recipe.ingredients[index]
+                                              .foodCategory ??
+                                          "",
                                       style: textStyleF12W500(),
                                     )
                                   ],
@@ -299,7 +312,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                           style: textStyleF10W300(color: secondaryColor),
                         ),
                         Text(
-                          'BBC Food',
+                          widget.recipes.recipe.source,
                           style: textStyleF10W700(color: secondaryColor),
                         ),
                         const Icon(
@@ -460,10 +473,18 @@ class _RecipeDetailPageState extends State<RecipeDetailPage>
                             child: TabBarView(
                               controller: tabController,
                               children: [
-                                CustomRawScrollbar(),
-                                CustomRawScrollbar(),
-                                CustomRawScrollbar(),
-                                CustomRawScrollbar(),
+                                CustomRawScrollbar(
+                                  recipes: widget.recipes,
+                                ),
+                                CustomRawScrollbar(
+                                  recipes: widget.recipes,
+                                ),
+                                CustomRawScrollbar(
+                                  recipes: widget.recipes,
+                                ),
+                                CustomRawScrollbar(
+                                  recipes: widget.recipes,
+                                ),
                               ],
                             ),
                           ),
